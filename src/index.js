@@ -1,42 +1,28 @@
-/*!
-
-=========================================================
-* Material Dashboard React - v1.8.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { Router } from "react-router-dom";
+import './config/ReactotronConfig'
 
-// core components
-import Admin from "layouts/Admin.js";
-import Auth from "layouts/Auth.js";
-import RTL from "layouts/RTL.js";
+import { PersistGate } from 'redux-persist/integration/react'
+import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
+
+import history from './services/history'
+
+import Route from './routes/index'
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
-const hist = createBrowserHistory();
+import { store, persistor } from './store' 
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-    <Route path="/login" component={Auth} />
-    <Route path="/admin" component={Admin} />
-      <Route path="/rtl" component={RTL} />
-      <Redirect from="/" to="/login" />
-    </Switch>
-  </Router>,
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <Router history={history}>        
+        <Route />
+        <ToastContainer autoClose={3000} />
+      </Router>
+      </PersistGate>
+  </Provider>,
   document.getElementById("root")
 );
