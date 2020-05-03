@@ -5,7 +5,11 @@ import api from '../../../services/api'
 
 import { signInSuccess, signFailure } from './actions'
 
+import { startRequest, endRequest } from '../request/actions'
+
 export function* signIn({ payload }) {
+
+  yield put(startRequest())
 
   try {
 
@@ -16,6 +20,8 @@ export function* signIn({ payload }) {
       password: password
     })
 
+    yield put(endRequest())
+
     const { access_token } = response.data
 
     if(!access_token) {
@@ -24,13 +30,19 @@ export function* signIn({ payload }) {
     }
 
     api.defaults.headers.Authorization = `Bearer ${access_token}`
+
+    yield put(startRequest())
+
     const profile = yield call(api.get, '/profile')
 
     yield put(signInSuccess(access_token, profile.data.data))
 
-    history.push('/admin/dashboard')
+    yield put(endRequest())
+
+    history.push('/choose-company')
 
   } catch (err) {
+    yield put(endRequest())
     toast.error('Falha na autenticação, verifique seus dados')
     yield put(signFailure())
   }
@@ -38,13 +50,17 @@ export function* signIn({ payload }) {
 }
 
 export function setToken({ payload }) {
+  
   if(!payload) return
 
   const { access_token } = payload.auth
 
   if(access_token) {
+
     api.defaults.headers.Authorization = `Bearer ${access_token}`
+
   }
+
 }
 
 export function signOut() {

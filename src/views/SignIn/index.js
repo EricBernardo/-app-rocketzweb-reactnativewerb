@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { useDispatch, useSelector } from 'react-redux'
-
-import { Form, Input } from '@rocketseat/unform'
-import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
 
 import { signInRequest } from 'store/modules/auth/actions'
 
@@ -17,12 +14,8 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { InputLabel } from "@material-ui/core";
 
-const schema = Yup.object().shape({
-  email: Yup.string().email('Insira um e-mail válido').required('O e-mail obrigatório'),
-  password: Yup.string().required('A senha é obrigatório')
-})
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const styles = {
   cardCategoryWhite: {
@@ -45,13 +38,24 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function UserProfile() {
+export default function Signin() {
+
   const classes = useStyles();
+  const dispatch = useDispatch()  
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const dispatch = useDispatch()
-  const loading = useSelector(state => state.auth.loading)
+  const handleChangeEmail = (event) => {
+    const email = event.target.value;
+    setEmail(email)
+  }
 
-  function handleSubmit({ email, password }) {
+  const handleChangePassword = (event) => {
+    const email = event.target.value;
+    setPassword(email)
+  }
+
+  const handleSubmit = () => {
     dispatch(signInRequest(email, password))
   }
 
@@ -59,28 +63,47 @@ export default function UserProfile() {
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <Card>            
-            <Form schema={schema} onSubmit={handleSubmit}>  
+          <Card>
+            <ValidatorForm
+                onSubmit={handleSubmit}
+                onError={errors => console.log(errors)}
+                ref={null}
+            >
               <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Rocketz Web</h4>
-                <p className={classes.cardCategoryWhite}>Login</p>
-              </CardHeader>
-              <CardBody>
+                  <h4 className={classes.cardTitleWhite}>Rocketz Web</h4>
+                  <p className={classes.cardCategoryWhite}>Login</p>
+              </CardHeader>                                
+              <CardBody>                
                 <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                    <TextValidator
+                        label="E-mail"
+                        onChange={handleChangeEmail}
+                        className="MuiFormControl-fullWidth"
+                        name="email"
+                        value={email}
+                        validators={['required', 'isEmail']}
+                        errorMessages={['Esse campo é obrigatório', 'E-mail inválido']}
+                    />
+                  </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
-                    <InputLabel>E-mail</InputLabel>
-                    <Input name="email" className="form-control" type="email" placeholder="E-mail" />
-                  </GridItem>              
-                  <GridItem xs={12} sm={12} md={12}>
-                    <InputLabel>Senha</InputLabel>
-                    <Input name="password" type="password" placeholder="Senha" />
-                  </GridItem>            
-                </GridContainer>
+                    <TextValidator
+                        label="Senha"
+                        onChange={handleChangePassword}
+                        className="MuiFormControl-fullWidth"
+                        type="password"
+                        name="password"
+                        value={password}
+                        validators={['required']}
+                        errorMessages={['Esse campo é obrigatório']}
+                    />
+                  </GridItem>
+                </GridContainer>                  
               </CardBody>
               <CardFooter>
-                <Button type="submit" color="success" disabled={loading}>{loading ? 'Carregando...' : 'Login'}</Button>
-              </CardFooter>
-            </Form>
+                <Button type="submit" color="success">Login</Button>
+              </CardFooter>            
+            </ValidatorForm>
           </Card>
         </GridItem>        
       </GridContainer>

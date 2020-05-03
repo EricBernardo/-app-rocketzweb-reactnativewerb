@@ -2,7 +2,8 @@ import produce from 'immer'
 
 const INITIAL_STATE = {
   profile: null,
-  loading: false
+  loading: false,
+  company: null
 }
 
 export default function auth(state = INITIAL_STATE, action) {
@@ -13,8 +14,12 @@ export default function auth(state = INITIAL_STATE, action) {
         break
       }
       case '@user/UPDATE_PROFILE_SUCCESS': {
-        draft.profile = action.payload.profile
+        draft.company = action.payload.company
         draft.loading = false
+        break
+      }
+      case '@user/CHOOSE_COMPANY': {        
+        draft.company = action.payload.company
         break
       }
       case '@auth/SIGN_IN_SUCCESS': {

@@ -18,3 +18,9 @@ export function updateProfileFailure() {
   }
 }
 
+export function chooseCompany(company) {  
+  return {
+    type: '@user/CHOOSE_COMPANY',
+    payload: { company }
+  }
+}

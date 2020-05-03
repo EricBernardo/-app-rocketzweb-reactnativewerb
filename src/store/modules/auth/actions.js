@@ -23,3 +23,10 @@ export function signOut() {
     type: '@auth/SIGN_OUT'
   }
 }
+
+export function setCompany(company) {
+  return {
+    type: '@auth/SET_COMPANY',
+    payload: { company }
+  }
+}
