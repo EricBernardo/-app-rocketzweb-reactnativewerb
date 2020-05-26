@@ -3,11 +3,11 @@ import { toast } from 'react-toastify'
 
 import api from '../../../services/api'
 
-import { companiesSuccess } from './actions'
+import * as actionCompany from './actions'
 
 import { startRequest, endRequest } from './../request/actions'
 
-export function* allCompanySagas() {
+export function* getListAllCompanySagas() {
 
   yield put(startRequest())
 
@@ -15,7 +15,7 @@ export function* allCompanySagas() {
 
     const response = yield call(api.get, 'company/all')
 
-    yield put(companiesSuccess(response.data.data))
+    yield put(actionCompany.setList(response.data))
 
     yield put(endRequest())
 
@@ -30,5 +30,5 @@ export function* allCompanySagas() {
 }
 
 export default all([
-  takeLatest('@company/ALL', allCompanySagas)
+  takeLatest('@company/GET_LIST_ALL', getListAllCompanySagas)
 ])

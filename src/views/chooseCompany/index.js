@@ -13,12 +13,13 @@ import { ValidatorForm, SelectValidator} from 'react-material-ui-form-validator'
 import { MenuItem } from "@material-ui/core"
 
 import history from "services/history"
-import * as ActionAuth from "store/modules/auth/actions"
-import * as ActionCompany from "store/modules/company/actions"
+
+import * as actionAuth from "store/modules/auth/actions"
+import * as actionCompany from "store/modules/company/actions"
 
 export default function ChooseCompany() {
 
-  const companies = useSelector(state => state.company.list)
+  const companies = useSelector(state => state.company.data)
  
   const dispatch = useDispatch()
 
@@ -28,7 +29,7 @@ export default function ChooseCompany() {
     
     setCompany(event.target.value)
 
-    dispatch(ActionAuth.setCompany(company))
+    dispatch(actionAuth.setCompany(company))
 
     history.push('/category')
 
@@ -36,7 +37,7 @@ export default function ChooseCompany() {
 
   useEffect(() => {
 
-    dispatch(ActionCompany.getCompaniesAll())
+    dispatch(actionCompany.getListAll())
 
   }, [dispatch])
 
@@ -45,10 +46,7 @@ export default function ChooseCompany() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <ValidatorForm                
-                ref={null}
-                onSubmit={() => {}}
-            >
+            <ValidatorForm onSubmit={() => {}}>
               <CardHeader color="primary">
                   <h4>Selecione uma empresa</h4>                    
               </CardHeader>                                

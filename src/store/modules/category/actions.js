@@ -1,18 +1,32 @@
-export function getCategories() {  
+export function show(id) {  
   return {
-    type: '@category/GET'
+    type: '@category/SHOW',
+    payload: { id }
   }
 }
 
-export function categoriesSuccess(categories) {
+export function set(form) {  
   return {
-    type: '@category/SUCCESS',
-    payload: { categories }
+    type: '@category/SET',
+    payload: { form }
   }
 }
 
-export function categoriesFailure() {
+export function getList() {  
   return {
-    type: '@category/FAILURE',
+    type: '@category/GET_LIST'
+  }
+}
+
+export function setList(data) {
+  return {
+    type: '@category/SET_LIST',
+    payload: { data }
+  }
+}
+
+export function failureList() {
+  return {
+    type: '@category/FAILURE_LIST',
   }
 }

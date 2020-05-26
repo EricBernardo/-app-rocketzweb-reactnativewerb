@@ -6,7 +6,7 @@ export default reducers => {
   const persistedReducer = persistReducer({
     key: 'roweweb',
     storage,
-    whitelist: ['auth', 'user', 'category', 'chooseCompany']
+    whitelist: ['auth', 'user']
   }, reducers)
 
   return persistedReducer

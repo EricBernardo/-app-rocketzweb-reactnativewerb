@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -7,31 +7,41 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
-import api from "services/api";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import * as actionCategory from "store/modules/category/actions"
+import history from "services/history";
+import { Link } from "react-router-dom";
 
 export default function Category() {
 
   const [categories, setCategories] = useState([])
 
-  async function loadData(page = 1) {
+  useSelector(state => state.category.data, function(response) {
 
-    const response = await api.get('/product_category', {
-      params: { page }
-    })
-
-    const data = response.data.data.map(item => {
-      return [item.title, <Button color="warning" onClick={()=> {alert(item.id)}}>Editar</Button>, <Button color="danger">Excluir</Button>]
+    const data = response.map(item => {      
+      return [
+        item.title, 
+        // <Button color="warning" onClick={()=> {
+        //   history.to('category/edit/' + item.id)
+        // }}>Editar</Button>
+        <Link to="category-edit" params={{ id: item.id }}>Editar</Link>, 
+        <Button color="danger">Excluir</Button>
+      ]
     })
 
     setCategories(data)
 
-  }
+  })
+  
+  const dispatch = useDispatch()
 
   useEffect(() => {
 
-    loadData()
+    dispatch(actionCategory.getList())
 
-  }, [])
+  }, [dispatch])
 
   return (
     <GridContainer>

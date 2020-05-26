@@ -1,18 +1,18 @@
-export function getCompaniesAll() {  
+export function getListAll() {  
   return {
-    type: '@company/ALL'
+    type: '@company/GET_LIST_ALL'
   }
 }
 
-export function companiesSuccess(companies) {
+export function setList(data) {
   return {
-    type: '@company/SUCCESS',
-    payload: { companies }
+    type: '@company/SET_LIST',
+    payload: { data }
   }
 }
 
-export function companiesFailure() {
+export function failureList() {
   return {
-    type: '@company/FAILURE',
+    type: '@company/FAILURE_LIST',
   }
 }
